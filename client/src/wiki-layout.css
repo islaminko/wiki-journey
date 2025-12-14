@@ -1,0 +1,103 @@
+/* Wikipedia-style Layout Variables - Scoped */
+.wiki-embed {
+  --wiki-bg: #ffffff;
+  --wiki-text: #202122;
+  --wiki-link: #3366cc;
+  --wiki-border: #a2a9b1;
+  --wiki-font-serif: "Linux Libertine", "Georgia", "Times", serif;
+  --wiki-font-sans: sans-serif;
+
+  /* Apply base styles to the container */
+  background-color: var(--wiki-bg);
+  color: var(--wiki-text);
+  font-family: var(--wiki-font-sans);
+  height: 100%;
+  min-height: 100vh;
+}
+
+.wiki-embed.dark {
+  --wiki-bg: #202122;
+  --wiki-text: #ffffff;
+  --wiki-link: #809dff;
+  --wiki-border: #54595d;
+}
+
+/* Main Area */
+.wiki-main {
+  padding: 1.5rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* Header / Tabs */
+.wiki-header {
+  border-bottom: 1px solid var(--wiki-border);
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.wiki-tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.wiki-tab {
+  padding: 8px 16px;
+  background: var(--wiki-bg);
+  border: 1px solid transparent;
+  border-bottom: none;
+  cursor: default;
+  font-size: 13px;
+  color: var(--wiki-link);
+}
+
+.wiki-tab.active {
+  border-color: var(--wiki-border);
+  border-bottom-color: var(--wiki-bg);
+  background: var(--wiki-bg);
+  position: relative;
+  top: 1px;
+  color: var(--wiki-text);
+  font-weight: bold;
+}
+
+.wiki-title {
+  font-family: var(--wiki-font-serif);
+  font-size: 1.8rem;
+  border-bottom: 1px solid var(--wiki-border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  font-weight: normal;
+  color: var(--wiki-text);
+}
+
+/* Article Content */
+.wiki-content {
+  font-family: sans-serif;
+  line-height: 1.6;
+  font-size: 0.875rem;
+}
+
+.wiki-content a {
+  color: var(--wiki-link);
+  text-decoration: none;
+}
+
+.wiki-content a:hover {
+  text-decoration: underline;
+}
+
+.wiki-content p {
+  margin-bottom: 0.5rem;
+}
+
+.wiki-content h2 {
+  font-family: var(--wiki-font-serif);
+  border-bottom: 1px solid var(--wiki-border);
+  font-size: 1.5em;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  font-weight: normal;
+}

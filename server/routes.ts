@@ -23,7 +23,7 @@ const NON_ARTICLE_PREFIXES = [
 
 function isArticleLink(href: string): boolean {
   // Check if the link starts with a non-article prefix
-  return !NON_ARTICLE_PREFIXES.some(prefix => 
+  return !NON_ARTICLE_PREFIXES.some(prefix =>
     href.startsWith(prefix) || href.startsWith(prefix.toLowerCase())
   );
 }
@@ -39,8 +39,8 @@ async function getRandomArticles(count: number = 2): Promise<string[]> {
 
   const response = await fetch(`${WIKIPEDIA_API}?${params}`);
   const data = await response.json();
-  
-  return data.query.random.map((article: { title: string }) => 
+
+  return data.query.random.map((article: { title: string }) =>
     article.title.replace(/ /g, "_")
   );
 }
@@ -81,15 +81,15 @@ async function getArticleContent(title: string): Promise<{
     (match: string, beforeHref: string, href: string, afterHref: string, content: string) => {
       // Decode the href and remove fragment
       let articleTitle = decodeURIComponent(href).split("#")[0];
-      
+
       // Check if this is an article link
       if (!isArticleLink(articleTitle)) {
         return `<span class="text-muted-foreground">${content}</span>`;
       }
-      
+
       // Replace spaces with underscores for consistency
       articleTitle = articleTitle.replace(/ /g, "_");
-      
+
       return `<a href="#" data-wiki-link="${encodeURIComponent(articleTitle)}" class="wiki-link">${content}</a>`;
     }
   );
@@ -112,17 +112,17 @@ async function getArticleContent(title: string): Promise<{
   // Remove reference sections
   html = html.replace(/<div class="reflist[\s\S]*?<\/div>/gi, '');
   html = html.replace(/<sup class="reference"[\s\S]*?<\/sup>/gi, '');
-  
+
   // Remove category links
   html = html.replace(/<div id="catlinks"[\s\S]*?<\/div>/gi, '');
-  
+
   // Remove navigation boxes (multi-pass for nested structures)
   html = html.replace(/<div[^>]*class="[^"]*navbox[^"]*"[\s\S]*?<\/div>/gi, '');
   html = html.replace(/<table[^>]*class="[^"]*navbox[^"]*"[\s\S]*?<\/table>/gi, '');
 
   // Remove authority control
   html = html.replace(/<div[^>]*class="[^"]*mw-authority-control[^"]*"[\s\S]*?<\/div>/gi, '');
-  
+
   // Remove empty paragraphs
   html = html.replace(/<p>\s*<\/p>/gi, '');
 
@@ -138,9 +138,18 @@ export async function registerRoutes(
   app: Express
 ): Promise<Server> {
   // Start a new game with random start and target articles
+  // Start a new game with random start and target articles
   app.post("/api/game/new", async (req, res) => {
     try {
-      const articles = await getRandomArticles(2);
+      const { startArticle, targetArticle } = req.body;
+      let articles: string[] = [];
+
+      if (startArticle && targetArticle) {
+        articles = [startArticle, targetArticle].map(a => a.replace(/ /g, "_"));
+      } else {
+        articles = await getRandomArticles(2);
+      }
+
       res.json({
         startArticle: articles[0],
         targetArticle: articles[1],
